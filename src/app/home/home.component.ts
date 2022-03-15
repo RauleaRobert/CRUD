@@ -12,8 +12,11 @@ export class HomeComponent implements OnInit {
   
   constructor(private readonly userService: UserService) { }
 
-  ngOnInit(): void {
-    this.users = this.userService.getUsers();
+  async ngOnInit(): Promise <void>  {
+    console.log('START');
+    this.users = await this.userService.getUsers();
+    console.log('STOP');
+    
   };
 
   handleDelete(user: User){

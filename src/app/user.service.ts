@@ -31,8 +31,12 @@ export class UserService {
 
   constructor() { }
 
-  public getUsers(): User[] {
-    return this.users;
+  public getUsers(): Promise < User[] > { // Promise => ca un fel de promisiune
+    return new Promise(
+      (resolve, reject) => {
+        setTimeout(() => {resolve(this.users)}, 2000)
+      }
+    )
   }
 
   public deleteUser(user: User): void {

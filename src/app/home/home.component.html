@@ -10,7 +10,7 @@
         <th>Email</th>
         <th>Actions</th>
     </tr>
-    <ng-container *ngFor="let user of users; index as i">
+    <ng-container *ngFor="let user of users; index as i" >
         <tr>
             <td> {{ i+1 }} </td>
             <td> {{ user.lastName }} </td>
@@ -23,5 +23,8 @@
                 <button (click)="handleDelete(user)">Delete</button>
             </td>
         </tr>
+    </ng-container>
+    <ng-container *ngIf="users.length === 0">
+        Loading...
     </ng-container>
 </table>

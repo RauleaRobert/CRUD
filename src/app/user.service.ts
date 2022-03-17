@@ -5,29 +5,31 @@ import { User } from './user';
   providedIn: 'root'
 })
 export class UserService {
- private users: User[] = [
-    {
-      id: 1,
-      lastName: 'Raulea',
-      firstName: 'Robert',
-      email: 'robert.raulea@bearingpoint.com',
-      userName: 'RauleaR',
-    },
-    {
-      id: 2,
-      lastName: 'Ursu',
-      firstName: 'Daniel',
-      email: 'ursu.daniel@bearingpoint.com',
-      userName:'UrsuD',
-    },
-    {
-      id: 3,
-      lastName: 'Bucur',
-      firstName: 'Andreea',
-      email: 'bucur.andreea@bearingpoint.com',
-      userName: 'BucurA',
-    }
-  ];
+  public hide: boolean = true;
+
+  private users: User[] = [
+      {
+        id: 1,
+        lastName: 'Raulea',
+        firstName: 'Robert',
+        email: 'robert.raulea@bearingpoint.com',
+        userName: 'RauleaR',
+      },
+      {
+        id: 2,
+        lastName: 'Ursu',
+        firstName: 'Daniel',
+        email: 'ursu.daniel@bearingpoint.com',
+        userName:'UrsuD',
+      },
+      {
+        id: 3,
+        lastName: 'Bucur',
+        firstName: 'Andreea',
+        email: 'bucur.andreea@bearingpoint.com',
+        userName: 'BucurA',
+      }
+    ];
 
   constructor() { }
 
@@ -44,6 +46,4 @@ export class UserService {
     this.users.splice(index, 1);
   }
 
-
-  
 }

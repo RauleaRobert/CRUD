@@ -1,0 +1,9 @@
+.modal {
+    display: grid;
+    visibility: visible;
+}
+
+hr {
+    border: none;
+    width: 20em;
+}

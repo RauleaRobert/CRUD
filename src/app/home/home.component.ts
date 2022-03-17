@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,OnInit} from '@angular/core';
 import { User } from '../user';
 import { UserService } from '../user.service';
 
@@ -9,6 +9,7 @@ import { UserService } from '../user.service';
 })
 export class HomeComponent implements OnInit {
   public users: User[] = [];
+  public visible: boolean = false;
   
   constructor(private readonly userService: UserService) { }
 
@@ -16,10 +17,17 @@ export class HomeComponent implements OnInit {
     console.log('START');
     this.users = await this.userService.getUsers();
     console.log('STOP');
-    
   };
 
   handleDelete(user: User){
     this.userService.deleteUser(user);
+  }
+
+  showDialog(){
+    this.visible = true;
+  }
+
+  visibleReq(state:boolean){
+    this.visible = state;
   }
 }

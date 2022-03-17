@@ -1,10 +1,10 @@
 <h2>Home Page</h2>
-<button>Add User</button>
+<button  (click)="showDialog()">Add User</button>
 
 <table style="width:100%;">
     <tr>
         <th>Id</th>
-        <th>Name</th>
+        <th>LastName</th>
         <th>Firstname</th>
         <th>Username</th>
         <th>Email</th>
@@ -17,7 +17,7 @@
             <td> {{ user.firstName }} </td>
             <td> {{ user.userName }} </td>
             <td> {{ user.email }} </td>
-            <td>
+            <td class="actions">
                 <button>See</button>
                 <button>Edit</button>
                 <button (click)="handleDelete(user)">Delete</button>
@@ -28,3 +28,5 @@
         Loading...
     </ng-container>
 </table>
+
+<app-users-editor *ngIf="visible" (visibleRequest)="visibleReq($event)"></app-users-editor>

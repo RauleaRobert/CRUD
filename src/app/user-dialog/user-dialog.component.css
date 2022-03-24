@@ -1,0 +1,19 @@
+.modal {
+    display: flex;
+    flex-direction: column;
+}
+.formClass {
+    display: grid;
+}
+hr {
+    border: none;
+    width: 20em;
+}
+
+#yesNo {
+    margin-top: 60px;
+}
+
+.error {
+    color: red;
+}

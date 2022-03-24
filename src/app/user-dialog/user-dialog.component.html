@@ -1,0 +1,59 @@
+<dialog open class ="modal">
+    <form *ngIf="user" [formGroup]="userDetailsForm" class="formClass" >
+
+        <label for="lastName">Last Name: </label>
+        <input type="text" id="lastName" formControlName="lastName">
+             
+            <div *ngIf="lastNameFormControl?.invalid && lastNameFormControl?.touched">
+                <div *ngIf="lastNameFormControl?.errors?.['required']" class="error">
+                    Last Name is required.
+                </div>
+                <div *ngIf="lastNameFormControl?.errors?.['minlength']" class="error">
+                    Last Name must be at least 4 characters long.
+                </div>
+            </div> 
+        
+        <label for="firstName">First Name: </label>
+        <input type="text" id="firstName" formControlName="firstName">
+ 
+            <div *ngIf="firstNameFormControl?.invalid && firstNameFormControl?.touched">
+                <div *ngIf="firstNameFormControl?.errors?.['required']" class="error">
+                    First Name is required.
+                </div>
+                <div *ngIf="firstNameFormControl?.errors?.['minlength']" class="error">
+                    First Name must be at least 4 characters long.
+                </div>
+            </div> 
+
+        <label for="userName">User Name: </label>
+        <input type="text" id="userName" formControlName="userName">
+
+            <div *ngIf="userNameFormControl?.errors?.['pattern']" class="error">
+                You can use letters only!
+            </div>
+
+        <label for="email">Email: </label>
+        <input type="text" id="email" formControlName="email">
+
+            <div *ngIf="emailFormControl?.invalid && emailFormControl?.touched">
+                <div *ngIf="emailFormControl?.errors?.['required']" class="error">
+                    Email is required.
+                </div>
+                <div *ngIf="emailFormControl?.errors?.['email']" class="error">
+                    Email must be a valid!
+                </div>
+            </div>
+            
+    </form>
+    <hr>
+    <!-- <button (click)="onClick()">TEST</button> -->
+    <button type="submit" [disabled]="!userDetailsForm.valid" (click)="onSubmit()"> Submit </button>
+    <button (click)="closeDialog()" >Cancel</button>
+
+</dialog>
+<!-- Confirmation dialog -->
+<dialog open class ="modal" id="yesNo" *ngIf="showConfirmationDialog">
+    <p>Are you sure ?</p>
+    <button (click)="handleConfirm(true)">Yes</button>
+    <button (click)="handleConfirm(false)">No</button>
+</dialog>

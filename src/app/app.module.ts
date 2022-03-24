@@ -5,13 +5,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { UsersEditorComponent } from './users-editor/users-editor.component';
+import { UserDialogComponent } from './user-dialog/user-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    UsersEditorComponent
+    UserDialogComponent
   ],
   imports: [
     BrowserModule,

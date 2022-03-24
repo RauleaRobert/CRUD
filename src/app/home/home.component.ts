@@ -9,9 +9,19 @@ import { UserService } from '../user.service';
 })
 export class HomeComponent implements OnInit {
   public users: User[] = [];
-  public visible: boolean = false;
+  public editDialogVisible: boolean = false;
+  public userInEdit?: User;
+  public dialogType: "Add" | "Edit" = "Add";
+  public emptyObj: User = {
+    id: -1,
+    lastName: '',
+    firstName: '',
+    email: '',
+    userName: ''
+  };
   
   constructor(private readonly userService: UserService) { }
+ 
 
   async ngOnInit(): Promise <void>  {
     console.log('START');
@@ -23,11 +33,29 @@ export class HomeComponent implements OnInit {
     this.userService.deleteUser(user);
   }
 
-  showDialog(){
-    this.visible = true;
+  showAddDialog(){
+    this.dialogType = "Add";
+    this.userInEdit = {...this.emptyObj};
+    this.editDialogVisible = true;
   }
 
-  visibleReq(state:boolean){
-    this.visible = state;
+  showEditDialog(user: User){
+    this.dialogType = "Edit";
+    this.userInEdit = {...user};
+    this.editDialogVisible = true;
+  }
+  
+  handleAdd(addedUser: User): void {
+    this.userService.addUser(addedUser);
+    this.editDialogVisible = false;
+  }
+
+  handleEdit(editedUser: User) {
+    this.userService.save(editedUser);
+    this.editDialogVisible = false;
+  }
+  
+  handleDialogCloseRequest(){
+    this.editDialogVisible = false;
   }
 }

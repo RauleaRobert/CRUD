@@ -1,5 +1,5 @@
 <h2>Home Page</h2>
-<button  (click)="showDialog()">Add User</button>
+<button (click)="showAddDialog()">Add User</button>
 
 <table style="width:100%;">
     <tr>
@@ -18,8 +18,7 @@
             <td> {{ user.userName }} </td>
             <td> {{ user.email }} </td>
             <td class="actions">
-                <button>See</button>
-                <button>Edit</button>
+                <button (click)="showEditDialog(user)">Edit</button>
                 <button (click)="handleDelete(user)">Delete</button>
             </td>
         </tr>
@@ -29,4 +28,4 @@
     </ng-container>
 </table>
 
-<app-users-editor *ngIf="visible" (visibleRequest)="visibleReq($event)"></app-users-editor>
+<app-user-dialog *ngIf="editDialogVisible" [type]="dialogType" [user]="userInEdit" (onAdd)="handleAdd($event)" (onEdit)="handleEdit($event)" (onCloseRequest)="handleDialogCloseRequest()"></app-user-dialog>

@@ -93,6 +93,7 @@ export class UserDialogComponent implements OnChanges {
         email: this.emailFormControl?.value,
         userName: this.userNameFormControl?.value,
       }
+      console.log(userFromForm.id);
 
       if (this.type === "Edit") {
         this.onEdit.emit(userFromForm)

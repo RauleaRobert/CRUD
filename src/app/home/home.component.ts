@@ -8,12 +8,13 @@ import { UserService } from '../user.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  public userCount: number = 0;
   public users: User[] = [];
   public editDialogVisible: boolean = false;
   public userInEdit?: User;
   public dialogType: "Add" | "Edit" = "Add";
-  public emptyObj: User = {
-    id: -1,
+  public defaultUser: User = {
+    id: 0,
     lastName: '',
     firstName: '',
     email: '',
@@ -26,16 +27,19 @@ export class HomeComponent implements OnInit {
   async ngOnInit(): Promise <void>  {
     console.log('START');
     this.users = await this.userService.getUsers();
+    this.userCount = this.users.length;
     console.log('STOP');
   };
-
+  
   handleDelete(user: User){
     this.userService.deleteUser(user);
   }
 
   showAddDialog(){
     this.dialogType = "Add";
-    this.userInEdit = {...this.emptyObj};
+    this.userInEdit = {...this.defaultUser};
+    this.userCount++;
+    this.userInEdit.id = this.userCount;
     this.editDialogVisible = true;
   }
 

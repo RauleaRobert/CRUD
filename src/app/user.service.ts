@@ -5,7 +5,6 @@ import { User } from './user';
   providedIn: 'root'
 })
 export class UserService {
-
   private users: User[] = [
     {
       id: 1,

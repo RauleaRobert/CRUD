@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable ,ArgumentOutOfRangeError} from 'rxjs';
+import { Observable} from 'rxjs';
 import { User } from './user';
 
 @Injectable({
@@ -26,13 +26,7 @@ export class UserService {
 		return this.http.post<User>(`${this.ROOT_URL}/user/create`,user);
 	}
 
-	public save(editedUser: User): void {
-		const foundUser: User | undefined = this.users.find((user) => user.id === editedUser.id);
-		if (foundUser) {
-			const index = this.users.indexOf(foundUser);
-			if (index >= 0) {
-				this.users.splice(index, 1, editedUser);
-			}
-		}
+	public edit(editedUser: User): Observable<User> {
+		return this.http.put<User>(`${this.ROOT_URL}/user/${editedUser.id}`,editedUser);
 	}
 }

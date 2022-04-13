@@ -24,10 +24,10 @@ export class HomeComponent implements OnInit {
 	constructor(private readonly userService: UserService) { }
 
 	public ngOnInit() {
-		this.preparePosts();
+		this.loadUsers();
 	}
 
-	private preparePosts(): void {
+	private loadUsers(): void {
 		this.userService.getUsers().subscribe(
 			(value: User[]) => {
 				this.users = value;
@@ -38,10 +38,10 @@ export class HomeComponent implements OnInit {
 
 	public handleDelete(user: User) {
 		this.userService.deleteUser(user).subscribe(
-			(user: User) => this.preparePosts(),
+			(user: User) => this.loadUsers(),
 			(error: any) => console.log("ERROR deleteUser")
 		)
-
+		console.log(this.loadUsers());
 	}
 
 	public showAddDialog() {
@@ -60,14 +60,17 @@ export class HomeComponent implements OnInit {
 
 	public handleAdd(addedUser: User): void {
 		this.userService.addUser(addedUser).subscribe(
-			(user: User) => this.preparePosts(),
+			(user: User) => this.loadUsers(),
 			(error: any) => console.log('ERROR AddUser')
 		);
 		this.editDialogVisible = false;
 	}
 
 	public handleEdit(editedUser: User) {
-		this.userService.save(editedUser);
+		this.userService.edit(editedUser).subscribe(
+			(user: User) => this.loadUsers(),
+			(error: any) => console.log(error)
+			);
 		this.editDialogVisible = false;
 	}
 

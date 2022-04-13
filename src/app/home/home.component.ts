@@ -21,9 +21,9 @@ export class HomeComponent implements OnInit {
 		userName: ''
 	};
 
-	public constructor(private readonly userService: UserService) { }
+	constructor(private readonly userService: UserService) { }
 
-	ngOnInit() {
+	public ngOnInit() {
 		this.preparePosts();
 	}
 
@@ -36,14 +36,15 @@ export class HomeComponent implements OnInit {
 		);
 	}
 
-	handleDelete(user: User) {
+	public handleDelete(user: User) {
 		this.userService.deleteUser(user).subscribe(
-			(user: User) => this.preparePosts()
+			(user: User) => this.preparePosts(),
+			(error: any) => console.log("ERROR deleteUser")
 		)
 
 	}
 
-	showAddDialog() {
+	public showAddDialog() {
 		this.dialogType = "Add";
 		this.userInEdit = { ...this.defaultUser };
 		this.userCount++;
@@ -57,17 +58,20 @@ export class HomeComponent implements OnInit {
 		this.editDialogVisible = true;
 	}
 
-	handleAdd(addedUser: User): void {
-		this.userService.addUser(addedUser);
+	public handleAdd(addedUser: User): void {
+		this.userService.addUser(addedUser).subscribe(
+			(user: User) => this.preparePosts(),
+			(error: any) => console.log('ERROR AddUser')
+		);
 		this.editDialogVisible = false;
 	}
 
-	handleEdit(editedUser: User) {
+	public handleEdit(editedUser: User) {
 		this.userService.save(editedUser);
 		this.editDialogVisible = false;
 	}
 
-	handleDialogCloseRequest() {
+	public handleDialogCloseRequest() {
 		this.editDialogVisible = false;
 	}
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable ,ArgumentOutOfRangeError} from 'rxjs';
 import { User } from './user';
 
 @Injectable({
@@ -12,26 +12,18 @@ export class UserService {
 
 	public readonly ROOT_URL = 'http://localhost:3000';
 
-	constructor(private readonly http: HttpClient) {
+	constructor(private readonly http: HttpClient) { }
 
-	}
-
-	public getUsers(): Observable<User[]> { // Promise => ca un fel de promisiune
+	public getUsers(): Observable<User[]> {
 		return this.http.get<User[]>(this.ROOT_URL + "/user");
 	}
 
-	// public deleteUser(user: User): void {
-	// 	let index: number = this.users.indexOf(user);
-	// 	this.users.splice(index, 1);
-	// }
-
 	public deleteUser(user: User): Observable<User> {
-		console.log(user.id);
 		return this.http.delete<User>(`${this.ROOT_URL}/user/${user.id}`);
 	}
 
-	public addUser(user: User): void {
-		this.users.push(user);
+	public addUser(user: User): Observable<User> {
+		return this.http.post<User>(`${this.ROOT_URL}/user/create`,user);
 	}
 
 	public save(editedUser: User): void {

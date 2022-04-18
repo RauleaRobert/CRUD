@@ -1,6 +1,14 @@
 .modal {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+	transform: translate(-50%, -50%);
+    margin-top: -50px;
+    margin-left: -50px;
+    width: 270px;
+    height: 220px;
 }
 .formClass {
     display: grid;

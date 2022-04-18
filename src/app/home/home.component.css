@@ -12,3 +12,19 @@ table {
     justify-content: center;
     align-items: center;
 }
+
+.page-counter-row {
+	text-align: center;
+	border: 0;
+}
+
+.dropdownAndPageNumber{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.pageCounter {
+	cursor: pointer;
+	padding: 0px 3px;
+}

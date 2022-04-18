@@ -2,30 +2,48 @@
 <button (click)="showAddDialog()">Add User</button>
 
 <table style="width:100%;">
-    <tr>
-        <th>Id</th>
-        <th>LastName</th>
-        <th>Firstname</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Actions</th>
-    </tr>
-    <ng-container *ngFor="let user of users; index as i" >
-        <tr>
-            <td> {{ i+1 }} </td>
-            <td> {{ user.lastName }} </td>
-            <td> {{ user.firstName }} </td>
-            <td> {{ user.userName }} </td>
-            <td> {{ user.email }} </td>
-            <td class="actions">
-                <button (click)="showEditDialog(user)">Edit</button>
-                <button (click)="handleDelete(user)">Delete</button>
-            </td>
-        </tr>
-    </ng-container>
-    <ng-container *ngIf="users.length === 0">
-        Loading...
-    </ng-container>
+	<tr>
+		<th style="width:2%;">Id</th>
+		<th style="width:15%;">LastName</th>
+		<th style="width:15%;">Firstname</th>
+		<th style="width:15%;">Username</th>
+		<th style="width:45%;">Email</th>
+		<th style="width:8%;">Actions</th>
+	</tr>
+	<ng-container *ngFor="let user of users; index as i">
+		<tr *ngIf="i < pageCount">
+			<td> {{ i+1 }} </td>
+			<td> {{ user.lastName }} </td>
+			<td> {{ user.firstName }} </td>
+			<td> {{ user.userName }} </td>
+			<td> {{ user.email }} </td>
+			<td class="actions">
+				<button (click)="showEditDialog(user)">Edit</button>
+				<button (click)="handleDelete(user)">Delete</button>
+			</td>
+		</tr>
+	</ng-container>
+	<ng-container *ngIf="users.length === 0">
+		Loading...
+	</ng-container>
+		<tr>
+			<td class="page-counter-row" colspan="6" >
+				<span class="dropdownAndPageNumber">
+					<ng-container *ngFor="let n of pagesNumber">
+						<div class="pageCounter" (click)="changePageEvent()">
+							{{n}}
+						</div>
+					</ng-container>
+					<div *ngFor=" let nr in users.length">{{nr}}</div>
+					<select name="items">
+						<ng-container *ngFor="let n of rowCountOptions" >
+							<option (click)="pageCountFcn(n)"> {{n}} </option>
+						</ng-container>
+					</select>
+				</span>
+			</td>
+		</tr>
 </table>
 
-<app-user-dialog *ngIf="editDialogVisible" [type]="dialogType" [user]="userInEdit" (onAdd)="handleAdd($event)" (onEdit)="handleEdit($event)" (onCloseRequest)="handleDialogCloseRequest()"></app-user-dialog>
+<app-user-dialog *ngIf="editDialogVisible" [type]="dialogType" [user]="userInEdit" (onAdd)="handleAdd($event)"
+	(onEdit)="handleEdit($event)" (onCloseRequest)="handleDialogCloseRequest()"></app-user-dialog>

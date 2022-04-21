@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 	styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, DoCheck {
+	public searchText: string = '';
 	public numberOfRowsPerPage: number = 5;
 	public rowCountOptions: number[] = [5, 10, 15, 20, 25];
 	public userCount: number = 0;

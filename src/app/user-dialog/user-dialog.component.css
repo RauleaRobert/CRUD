@@ -7,19 +7,25 @@
 	transform: translate(-50%, -50%);
     margin-top: -50px;
     margin-left: -50px;
+}
+
+#bigModal {
     width: 270px;
     height: 220px;
 }
+
 .formClass {
     display: grid;
 }
+
 hr {
     border: none;
     width: 20em;
 }
 
 #yesNo {
-    margin-top: 60px;
+	width: 100px;
+    height: 100px;
 }
 
 .error {

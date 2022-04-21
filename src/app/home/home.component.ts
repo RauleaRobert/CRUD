@@ -2,6 +2,7 @@ import { Component, DoCheck, OnInit } from '@angular/core';
 import { User } from '../user';
 import { UserService } from '../user.service';
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
 	selector: 'app-home',
@@ -9,49 +10,58 @@ import { ToastrService } from 'ngx-toastr';
 	styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, DoCheck {
-	public pageCount: number = 5;
-	public rowCountOptions: number[] = [5, 10, 15, 20, 100];
+	public numberOfRowsPerPage: number = 5;
+	public rowCountOptions: number[] = [5, 10, 15, 20, 25];
 	public userCount: number = 0;
 	public users: User[] = [];
 	public pagesNumber: number[] = [];
 	public editDialogVisible: boolean = false;
 	public userInEdit?: User;
 	public dialogType: "Add" | "Edit" = "Add";
-	public defaultUser: User = {
-		id: 0,
-		lastName: '',
-		firstName: '',
-		email: '',
-		userName: ''
-	};
+	public curentPageNr: number = 0;
 
-	constructor(private readonly userService: UserService, private toastr: ToastrService) { }
-	
+	constructor (
+		private readonly userService: UserService, 
+		private toastr: ToastrService, 
+		private route: ActivatedRoute
+	) { }
+
 	public ngOnInit() {
 		this.loadUsers();
+		this.prepareNumberOfRowsFromURL();
+	}
+
+	private prepareNumberOfRowsFromURL(): void {
+		this.route.queryParams
+			.subscribe(params => {
+				if (params['rowPerPage']) {
+					this.numberOfRowsPerPage = params['rowPerPage'];
+				}
+			});
 	}
 
 	ngDoCheck(): void {
 		this.showPages();
 	}
 
-	public showPages(): number[]{
+	public showPages(): void {
 		this.pagesNumber = [];
-		for(let i = 1; i <= Math.floor(this.users.length / this.pageCount); i++){
+		const numberOfPages: number = Math.floor(this.users.length / this.numberOfRowsPerPage);
+		for (let i = 1; i <= numberOfPages; i++) {
 			this.pagesNumber.push(i);
 		}
-		if((this.users.length % this.pageCount) !== 0 ){
+		if ((this.users.length % this.numberOfRowsPerPage) !== 0) {
 			this.pagesNumber.push(this.pagesNumber.length + 1)
 		}
-		return this.pagesNumber
-	}
-	
-	public changePageEvent(){
-		
 	}
 
-	public pageCountFcn(n:number): void{
-		this.pageCount = n;
+	public changePage(pageNr: number) {
+		this.curentPageNr = this.numberOfRowsPerPage * pageNr - this.numberOfRowsPerPage;
+	}
+
+	public selectNumberOfRowsPerPage(n: number): void {
+		this.numberOfRowsPerPage = n;
+		this.curentPageNr = 0;
 	}
 
 	public showSuccesToaster(message: string) {
@@ -89,7 +99,13 @@ export class HomeComponent implements OnInit, DoCheck {
 
 	public showAddDialog() {
 		this.dialogType = "Add";
-		this.userInEdit = { ...this.defaultUser };
+		this.userInEdit = {
+			id: 0,
+			lastName: '',
+			firstName: '',
+			email: '',
+			userName: ''
+		};
 		this.userCount++;
 		this.userInEdit.id = this.userCount;
 		this.editDialogVisible = true;

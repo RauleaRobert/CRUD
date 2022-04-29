@@ -1,0 +1,59 @@
+<h2>Home Page</h2>
+<div class="form-group">
+	<input type="email" class="search_cls" id="search-text" aria-describedby="search-text" 
+	[(ngModel)]="searchText" placeholder="Search" 
+	  autofocus>
+	  <button (click)="showAddDialog()">Add User</button>
+	  <!-- <button routerLink="home2">Test</button> -->
+</div>
+
+<table style="width:100%;">
+	<tr>
+		<th style="width:2%;">Id</th>
+		<th style="width:15%;">LastName</th>
+		<th style="width:15%;">Firstname</th>
+		<th style="width:15%;">Username</th>
+		<th style="width:45%;">Email</th>
+		<th style="width:8%;">Actions</th>
+	</tr>
+	<!-- | slice: firstRowOfTable -->
+	<ng-container *ngFor="let user of users | search: searchText; index as i">
+		<tr *ngIf="i < numberOfRowsPerPage" class="tabelLine">
+			<td> {{ (i + 1) + firstRowOfTable}} </td>
+			<td> {{ user.lastName }} </td>
+			<td> {{ user.firstName }} </td>
+			<td> {{ user.userName }} </td>
+			<td> {{ user.email }} </td>
+			<td class="actions">
+				<button (click)="showEditDialog(user)">Edit</button>
+				<button (click)="handleDelete(user)">Delete</button>
+			</td>
+		</tr>
+	</ng-container>
+	<ng-container *ngIf="users.length === 0">
+		Loading...
+	</ng-container>
+		<tr>
+			<td class="page-counter-row" colspan="6" >
+				<span class="dropdownAndPageNumber">
+					<ng-container *ngFor="let n of pagesNumber">
+						<option class="pageCounter" (click)="changePage(n)" [routerLink]="['']" [queryParams]="{'rowPerPage':numberOfRowsPerPage , 'page': n}" [selected]="pageNr == n">
+							{{n}}
+						</option>
+					</ng-container>
+					<select name="items">
+						<ng-container *ngFor="let value of rowCountOptions" >
+							<option *ngIf="rowCountOptions" 
+								(click)="selectNumberOfRowsPerPage(value)"
+								[routerLink]="['']" [queryParams]="{'rowPerPage': value, 'page': 1}"
+								[selected]="numberOfRowsPerPage == value"> {{ value }} 
+							</option>
+						</ng-container>
+					</select>
+				</span>
+			</td>
+		</tr>
+</table>
+
+<app-user-dialog *ngIf="editDialogVisible" [type]="dialogType" [user]="userInEdit" (onAdd)="handleAdd($event)"
+	(onEdit)="handleEdit($event)" (onCloseRequest)="handleDialogCloseRequest()"></app-user-dialog>

@@ -1,0 +1,43 @@
+table, th, td {
+    border:1px solid black;
+}
+
+table {
+    width:100%;
+}
+
+.actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-counter-row {
+	text-align: center;
+	border: 0;
+}
+
+.dropdownAndPageNumber{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.pageCounter {
+	cursor: pointer;
+	padding: 0px 3px;
+}
+
+.pageCounter:hover {
+	cursor: pointer;
+	background-color: rgb(190, 234, 248);
+}
+
+.tabelLine:nth-child(even) {
+	background-color: rgb(230, 230, 230);
+}
+
+.tabelLine:hover {
+	background-color: rgb(190, 234, 248);
+}

@@ -4,6 +4,7 @@
 	[(ngModel)]="searchText" placeholder="Search" 
 	  autofocus>
 	  <button (click)="showAddDialog()">Add User</button>
+	  <!-- <button routerLink="home2">Test</button> -->
 </div>
 
 <table style="width:100%;">
@@ -15,9 +16,10 @@
 		<th style="width:45%;">Email</th>
 		<th style="width:8%;">Actions</th>
 	</tr>
-	<ng-container *ngFor="let user of users | search: searchText | slice: curentPageNr; index as i">
+	<!-- | slice: firstRowOfTable -->
+	<ng-container *ngFor="let user of users | search: searchText; index as i">
 		<tr *ngIf="i < numberOfRowsPerPage" class="tabelLine">
-			<td> {{ i + 1 + curentPageNr}} </td>
+			<td> {{ (i + 1) + firstRowOfTable}} </td>
 			<td> {{ user.lastName }} </td>
 			<td> {{ user.firstName }} </td>
 			<td> {{ user.userName }} </td>
@@ -35,17 +37,16 @@
 			<td class="page-counter-row" colspan="6" >
 				<span class="dropdownAndPageNumber">
 					<ng-container *ngFor="let n of pagesNumber">
-						<div class="pageCounter" (click)="changePage(n)">
+						<option class="pageCounter" (click)="changePage(n)" [routerLink]="['']" [queryParams]="{'rowPerPage':numberOfRowsPerPage , 'page': n}" [selected]="pageNr == n">
 							{{n}}
-						</div>
+						</option>
 					</ng-container>
-					<div *ngFor=" let usersPerPage in users.length">
-						{{usersPerPage}}
-					</div>
 					<select name="items">
 						<ng-container *ngFor="let value of rowCountOptions" >
-							<option *ngIf="rowCountOptions"
-								(click)="selectNumberOfRowsPerPage(value)" [routerLink]="['']" [queryParams]="{ 'rowPerPage': value }" [selected]="numberOfRowsPerPage == value"> {{ value }} 
+							<option *ngIf="rowCountOptions" 
+								(click)="selectNumberOfRowsPerPage(value)"
+								[routerLink]="['']" [queryParams]="{'rowPerPage': value, 'page': 1}"
+								[selected]="numberOfRowsPerPage == value"> {{ value }} 
 							</option>
 						</ng-container>
 					</select>

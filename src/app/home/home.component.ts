@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit} from '@angular/core';
 import { User } from '../user';
 import { UserService } from '../user.service';
 import { ToastrService } from 'ngx-toastr';
@@ -9,7 +9,8 @@ import { ActivatedRoute } from '@angular/router';
 	templateUrl: './home.component.html',
 	styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit, DoCheck {
+
+export class HomeComponent implements OnInit, DoCheck{
 	public searchText: string = '';
 	public numberOfRowsPerPage: number = 5;
 	public rowCountOptions: number[] = [5, 10, 15, 20, 25];
@@ -19,50 +20,70 @@ export class HomeComponent implements OnInit, DoCheck {
 	public editDialogVisible: boolean = false;
 	public userInEdit?: User;
 	public dialogType: "Add" | "Edit" = "Add";
-	public curentPageNr: number = 0;
+	public firstRowOfTable: number = 0;
+	public numberOfUsersFromDb = 18;
+	public pageNr: number = 1;
 
 	constructor (
 		private readonly userService: UserService, 
 		private toastr: ToastrService, 
-		private route: ActivatedRoute
-	) { }
-
-	public ngOnInit() {
+		private route: ActivatedRoute,
+		) { }
+		
+		
+		public ngOnInit() {
+		this.allUsers();
 		this.loadUsers();
 		this.prepareNumberOfRowsFromURL();
+	}
+
+	public allUsers () {
+		this.userService.getNrOfUsers().subscribe(
+			(nr: number) => {
+				this.numberOfUsersFromDb = nr;
+			},
+			(error) => this.showErrorToaster('Error getting number of all users from API')
+			);
+	}
+
+	public ngDoCheck(): void {
+		this.showPages();
 	}
 
 	private prepareNumberOfRowsFromURL(): void {
 		this.route.queryParams
 			.subscribe(params => {
-				if (params['rowPerPage']) {
+				if (params['rowPerPage'] || params['page']) {
 					this.numberOfRowsPerPage = params['rowPerPage'];
+					this.pageNr = params['page'];
+					this.loadUsers();
 				}
 			});
 	}
 
-	ngDoCheck(): void {
-		this.showPages();
-	}
-
 	public showPages(): void {
 		this.pagesNumber = [];
-		const numberOfPages: number = Math.floor(this.users.length / this.numberOfRowsPerPage);
+		const numberOfPages: number = Math.floor(this.numberOfUsersFromDb / this.numberOfRowsPerPage);
 		for (let i = 1; i <= numberOfPages; i++) {
 			this.pagesNumber.push(i);
 		}
-		if ((this.users.length % this.numberOfRowsPerPage) !== 0) {
+		if ((this.numberOfUsersFromDb % this.numberOfRowsPerPage) !== 0) {
 			this.pagesNumber.push(this.pagesNumber.length + 1)
 		}
 	}
 
-	public changePage(pageNr: number) {
-		this.curentPageNr = this.numberOfRowsPerPage * pageNr - this.numberOfRowsPerPage;
+	public changePage(pageNrFromHTML: number) {
+		this.pageNr = pageNrFromHTML;
+		this.firstRowOfTable = this.numberOfRowsPerPage * this.pageNr - this.numberOfRowsPerPage;
+		this.loadUsers();
 	}
+
 
 	public selectNumberOfRowsPerPage(n: number): void {
 		this.numberOfRowsPerPage = n;
-		this.curentPageNr = 0;
+		this.firstRowOfTable = 0;
+		this.pageNr = 1;
+		this.changePage(this.pageNr);
 	}
 
 	public showSuccesToaster(message: string) {
@@ -77,9 +98,8 @@ export class HomeComponent implements OnInit, DoCheck {
 		});
 	}
 
-
-	private loadUsers(): void {
-		this.userService.getUsers().subscribe(
+	public loadUsers(): void {
+		this.userService.getUsers(this.numberOfRowsPerPage, this.pageNr).subscribe(
 			(value: User[]) => {
 				this.users = value;
 			},
